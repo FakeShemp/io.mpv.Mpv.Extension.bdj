@@ -1,6 +1,6 @@
 # io.mpv.Mpv.Extension.bdj
 
-Optional Flatpak extension that adds Blu-ray Java (BD-J) menu support to [io.mpv.Mpv](https://flathub.org/apps/io.mpv.Mpv).
+Optional Flatpak extension that adds Blu-ray Java (BD-J) menu support to [io.mpv.Mpv](https://github.com/FakeShemp/io.mpv.Mpv/tree/bdj).
 
 It ships:
 
