@@ -1,0 +1,57 @@
+id: io.mpv.Mpv.Extension.bdj
+build-extension: true
+runtime: io.mpv.Mpv
+runtime-version: stable
+branch: stable
+sdk: org.freedesktop.Sdk//26.08
+sdk-extensions:
+  - org.freedesktop.Sdk.Extension.openjdk17
+separate-locales: false
+appstream-compose: false
+
+build-options:
+  env:
+    JAVA_HOME: /usr/lib/sdk/openjdk17/jvm/openjdk-17
+  append-path: /usr/lib/sdk/openjdk17/bin
+
+modules:
+  - name: openjdk
+    buildsystem: simple
+    build-commands:
+      - mkdir -p ${FLATPAK_DEST}/jre/bin
+      - cp -ra /usr/lib/sdk/openjdk17/jvm/openjdk-17/conf ${FLATPAK_DEST}/jre/
+      - cp -ra /usr/lib/sdk/openjdk17/jvm/openjdk-17/lib ${FLATPAK_DEST}/jre/
+      - cp -ra /usr/lib/sdk/openjdk17/jvm/openjdk-17/release ${FLATPAK_DEST}/jre/
+      - rm -f ${FLATPAK_DEST}/jre/lib/src.zip ${FLATPAK_DEST}/jre/lib/ct.sym
+      - cp -ra /usr/lib/sdk/openjdk17/jvm/openjdk-17/bin/java ${FLATPAK_DEST}/jre/bin/
+      - cp -ra /usr/lib/sdk/openjdk17/jvm/openjdk-17/bin/keytool ${FLATPAK_DEST}/jre/bin/
+      - cp -ra /usr/lib/sdk/openjdk17/jvm/openjdk-17/bin/rmiregistry ${FLATPAK_DEST}/jre/bin/
+
+  # Must match libbluray in ../io.mpv.Mpv.yml (currently 1.5.0).
+  - name: libbluray
+    buildsystem: simple
+    build-commands:
+      - meson setup _build --prefix=${FLATPAK_DEST} -Dbdj_jar=enabled -Dfontconfig=enabled -Dfreetype=enabled -Dlibxml2=enabled
+      - meson compile -C _build
+      - mkdir -p ${FLATPAK_DEST}/share/java
+      - cp -a _build/src/libbluray/bdj/libbluray-*-1.5.0.jar ${FLATPAK_DEST}/share/java/
+    sources:
+      - sha256: f676408e91a5d321abf8b8d4dfdae36205c297dab5c54c3ec519639025f474a2
+        type: archive
+        url: https://download.videolan.org/pub/videolan/libbluray/1.5.0/libbluray-1.5.0.tar.xz
+        x-checker-data:
+          type: html
+          url: https://download.videolan.org/pub/videolan/libbluray/last/
+          version-pattern: libbluray-([\w.]+)\.tar\.
+          url-template: https://download.videolan.org/pub/videolan/libbluray/$version/libbluray-$version.tar.xz
+
+  - name: envvars
+    buildsystem: simple
+    build-commands:
+      - install -Dm644 bdj-env.sh ${FLATPAK_DEST}/bdj-env.sh
+      - install -Dm644 io.mpv.Mpv.Extension.bdj.metainfo.xml ${FLATPAK_DEST}/share/metainfo/io.mpv.Mpv.Extension.bdj.metainfo.xml
+    sources:
+      - type: file
+        path: bdj-env.sh
+      - type: file
+        path: io.mpv.Mpv.Extension.bdj.metainfo.xml

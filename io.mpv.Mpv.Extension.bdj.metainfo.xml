@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="addon">
+  <id>io.mpv.Mpv.Extension.bdj</id>
+  <extends>io.mpv.Mpv</extends>
+  <name>Blu-ray Java (BD-J) menus for mpv</name>
+  <summary>Java runtime and libbluray JARs for Blu-ray BD-J menus</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0+ AND LGPL-2.1-or-later</project_license>
+  <url type="homepage">https://mpv.io/</url>
+  <url type="bugtracker">https://github.com/flathub/io.mpv.Mpv/issues</url>
+  <description>
+    <p>
+      Provides an OpenJDK 17 JRE and libbluray BD-J JAR files so mpv can display
+      Blu-ray Java (BD-J) interactive menus. Install this optional extension
+      alongside io.mpv.Mpv.
+    </p>
+  </description>
+  <releases>
+    <release version="1.5.0" date="2026-11-07">
+      <description>
+        <p>Initial BD-J extension matching libbluray 1.5.0 in io.mpv.Mpv.</p>
+      </description>
+    </release>
+  </releases>
+</component>
